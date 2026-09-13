@@ -1,17 +1,28 @@
 import { geocode, getForecast } from "../api/openMeteo.js";
+import { readReport, writeReport } from "../storage/reports.js";
 
-export async function getCityDigest(city, days) {
+export async function getCityDigest(city, days, { noCache = false } = {}) {
+  if (!noCache) {
+    const cached = await readReport(city);
+    if (cached) {
+      return { digest: cached, fromCache: true };
+    }
+  }
+
   const geo = await geocode(city);
   const forecast = await getForecast(geo.latitude, geo.longitude, days);
-  return buildDigest(geo, forecast);
+  const digest = buildDigest(geo, forecast);
+  await writeReport(city, digest);
+
+  return { digest, fromCache: false };
 }
 
-export async function processCities(cities, days) {
-  const results = await Promise.allSettled(cities.map((city) => getCityDigest(city, days)));
+export async function processCities(cities, days, options) {
+  const results = await Promise.allSettled(cities.map((city) => getCityDigest(city, days, options)));
 
   return results.map((result, i) => ({
     city: cities[i],
-    ...(result.status === "fulfilled" ? { digest: result.value } : { error: result.reason }),
+    ...(result.status === "fulfilled" ? result.value : { error: result.reason }),
   }));
 }
 
