@@ -113,6 +113,24 @@ docs/postman/          коллекция Postman
 docs/report.html       страница для просмотра сохранённого отчёта в браузере
 ```
 
+## Запуск в Docker
+
+```bash
+docker build -t weather-digest .
+docker run --rm -v "$(pwd)/reports:/app/reports" weather-digest --city "Москва" --days 3
+```
+
+Настраиваемые параметры (таймаут, каталог отчётов и т. д.) передаются через
+`-e`, например:
+
+```bash
+docker run --rm -e REQUEST_TIMEOUT_MS=10000 -v "$(pwd)/reports:/app/reports" \
+  weather-digest --city "Владивосток"
+```
+
+Каталог `reports` внутри контейнера рекомендуется монтировать как том, иначе
+отчёты и кэш пропадут при удалении контейнера.
+
 ## Разработка
 
 - Тесты: `npm test`
