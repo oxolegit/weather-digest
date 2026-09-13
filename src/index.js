@@ -1,4 +1,6 @@
 import { parseArgs } from "./cli/args.js";
+import { processCities } from "./services/weather.js";
+import { printDigest } from "./format/console.js";
 import { AppError } from "./errors.js";
 
 async function main() {
@@ -9,9 +11,21 @@ async function main() {
     return;
   }
 
-  console.log(`Города: ${args.cities.join(", ")}`);
-  console.log(`Дней прогноза: ${args.days}`);
-  console.log(`Кэш отключён: ${args.noCache}`);
+  const results = await processCities(args.cities, args.days);
+
+  let hasErrors = false;
+  for (const result of results) {
+    if (result.digest) {
+      printDigest(result.digest);
+    } else {
+      hasErrors = true;
+      console.error(`\nОшибка [${result.city}]: ${result.error.message}`);
+    }
+  }
+
+  if (hasErrors) {
+    process.exitCode = 1;
+  }
 }
 
 main().catch((error) => {
