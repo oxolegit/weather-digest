@@ -18,7 +18,9 @@ export async function getCityDigest(city, days, { noCache = false } = {}) {
 }
 
 export async function processCities(cities, days, options) {
-  const results = await Promise.allSettled(cities.map((city) => getCityDigest(city, days, options)));
+  const results = await Promise.allSettled(
+    cities.map((city) => getCityDigest(city, days, options)),
+  );
 
   return results.map((result, i) => ({
     city: cities[i],
