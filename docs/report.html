@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Просмотр отчёта — weather-digest</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 640px;
+        margin: 40px auto;
+        padding: 0 16px;
+        color: #1a1a1a;
+      }
+      h1 {
+        font-size: 1.3rem;
+      }
+      #meta {
+        margin: 16px 0;
+        color: #444;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 6px 10px;
+        text-align: right;
+      }
+      th:first-child,
+      td:first-child {
+        text-align: left;
+      }
+      #error {
+        color: #b00020;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Просмотр отчёта weather-digest</h1>
+    <p>Выберите JSON-файл отчёта из каталога <code>reports/</code>.</p>
+    <input type="file" id="fileInput" accept="application/json" />
+    <div id="meta"></div>
+    <table id="table" hidden>
+      <thead>
+        <tr>
+          <th>Дата</th>
+          <th>Мин, °C</th>
+          <th>Макс, °C</th>
+          <th>Осадки, мм</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+    <p id="error" hidden></p>
+
+    <script>
+      const fileInput = document.getElementById("fileInput");
+      const meta = document.getElementById("meta");
+      const table = document.getElementById("table");
+      const tableBody = document.getElementById("tableBody");
+      const errorBox = document.getElementById("error");
+
+      fileInput.addEventListener("change", () => {
+        const file = fileInput.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          errorBox.hidden = true;
+          try {
+            const report = JSON.parse(reader.result);
+            renderReport(report);
+          } catch {
+            table.hidden = true;
+            meta.textContent = "";
+            errorBox.textContent = "Не удалось разобрать файл: некорректный JSON.";
+            errorBox.hidden = false;
+          }
+        };
+        reader.readAsText(file);
+      });
+
+      function renderReport(report) {
+        meta.textContent = `${report.city}, ${report.country} — координаты: ${report.latitude}, ${report.longitude}`;
+
+        tableBody.innerHTML = "";
+        for (const day of report.days ?? []) {
+          const row = document.createElement("tr");
+
+          const cells = [day.date, day.tempMin, day.tempMax, day.precipitation];
+          for (const value of cells) {
+            const cell = document.createElement("td");
+            cell.textContent = value;
+            row.appendChild(cell);
+          }
+
+          tableBody.appendChild(row);
+        }
+
+        table.hidden = false;
+      }
+    </script>
+  </body>
+</html>
