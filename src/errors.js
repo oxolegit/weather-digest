@@ -22,9 +22,7 @@ export class CityNotFoundError extends AppError {
 export class HttpError extends AppError {
   constructor(status, url) {
     const reason =
-      status >= 500
-        ? "сервис временно недоступен"
-        : "ошибка в запросе к API (проверьте параметры)";
+      status >= 500 ? "сервис временно недоступен" : "ошибка в запросе к API (проверьте параметры)";
     super(`${reason}, статус ${status} (${url})`);
     this.name = "HttpError";
     this.status = status;

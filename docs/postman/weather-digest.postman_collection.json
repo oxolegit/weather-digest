@@ -109,7 +109,10 @@
               "query": [
                 { "key": "latitude", "value": "{{lat}}" },
                 { "key": "longitude", "value": "{{lon}}" },
-                { "key": "daily", "value": "temperature_2m_max,temperature_2m_min,precipitation_sum" },
+                {
+                  "key": "daily",
+                  "value": "temperature_2m_max,temperature_2m_min,precipitation_sum"
+                },
                 { "key": "forecast_days", "value": "{{days}}" },
                 { "key": "timezone", "value": "auto" }
               ]
@@ -126,7 +129,10 @@
                   "query": [
                     { "key": "latitude", "value": "55.75204" },
                     { "key": "longitude", "value": "37.61781" },
-                    { "key": "daily", "value": "temperature_2m_max,temperature_2m_min,precipitation_sum" },
+                    {
+                      "key": "daily",
+                      "value": "temperature_2m_max,temperature_2m_min,precipitation_sum"
+                    },
                     { "key": "forecast_days", "value": "3" },
                     { "key": "timezone", "value": "auto" }
                   ]
@@ -150,7 +156,10 @@
               "query": [
                 { "key": "latitude", "value": "999" },
                 { "key": "longitude", "value": "999" },
-                { "key": "daily", "value": "temperature_2m_max,temperature_2m_min,precipitation_sum" },
+                {
+                  "key": "daily",
+                  "value": "temperature_2m_max,temperature_2m_min,precipitation_sum"
+                },
                 { "key": "forecast_days", "value": "{{days}}" },
                 { "key": "timezone", "value": "auto" }
               ]
@@ -167,7 +176,10 @@
                   "query": [
                     { "key": "latitude", "value": "999" },
                     { "key": "longitude", "value": "999" },
-                    { "key": "daily", "value": "temperature_2m_max,temperature_2m_min,precipitation_sum" },
+                    {
+                      "key": "daily",
+                      "value": "temperature_2m_max,temperature_2m_min,precipitation_sum"
+                    },
                     { "key": "forecast_days", "value": "3" },
                     { "key": "timezone", "value": "auto" }
                   ]
