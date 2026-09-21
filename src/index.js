@@ -11,12 +11,12 @@ async function main() {
     return;
   }
 
-  const results = await processCities(args.cities, args.days);
+  const results = await processCities(args.cities, args.days, { noCache: args.noCache });
 
   let hasErrors = false;
   for (const result of results) {
     if (result.digest) {
-      printDigest(result.digest);
+      printDigest(result.digest, { fromCache: result.fromCache });
     } else {
       hasErrors = true;
       console.error(`\nОшибка [${result.city}]: ${result.error.message}`);
