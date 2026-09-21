@@ -3,6 +3,12 @@ import { processCities } from "./services/weather.js";
 import { printDigest } from "./format/console.js";
 import { AppError } from "./errors.js";
 
+process.on("unhandledRejection", (reason) => {
+  const message = reason instanceof Error ? reason.message : String(reason);
+  console.error(`Непредвиденная ошибка: ${message}`);
+  process.exitCode = 1;
+});
+
 async function main() {
   const args = parseArgs(process.argv.slice(2));
 
